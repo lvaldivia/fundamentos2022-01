@@ -1,17 +1,15 @@
 #include "Player.h"
-#include <SDL/SDL.h>
+#include <SDL\SDL.h>
 
-void Player::init(float speed, glm::vec2 position, InputManager* InputManager)
-{
+
+void Player::init(float speed, glm::vec2 position, InputManager* inputManager) {
 	_speed = speed;
 	_position = position;
-	_inputManager = InputManager;
-	_color.set(0, 255, 0, 255);
+	_inputManager = inputManager;
+	color.set(0, 0, 185, 255);
 }
-
-void Player::update(const std::vector<std::string>& levelData)
-{
-	if(_inputManager->isKeyPressed(SDLK_w)) {
+void Player::update(const std::vector<std::string>& levelData) {
+	if (_inputManager->isKeyPressed(SDLK_w)) {
 		_position.y += _speed;
 	}
 	if (_inputManager->isKeyPressed(SDLK_s)) {

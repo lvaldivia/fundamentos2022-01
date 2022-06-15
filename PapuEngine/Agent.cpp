@@ -11,8 +11,8 @@ Agent::Agent()
 void Agent::draw(SpriteBacth& spritebatch) {
 	static int textureID = ResourceManager::getTexture("Textures/circle.png").id;
 	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
-	glm::vec4 destRect(_position.x, _position.y, AGENT_WITDH, AGENT_WITDH);
-	spritebatch.draw(destRect, uvRect, textureID, 0.0f, _color);
+	glm::vec4 destRect(_position.x, _position.y, AGENT_WIDTH, AGENT_WIDTH);
+	spritebatch.draw(destRect, uvRect, textureID, 0.0f, color);
 }
 
 bool Agent::collideWithLevel(const std::vector<std::string>& levelData) {
@@ -21,9 +21,9 @@ bool Agent::collideWithLevel(const std::vector<std::string>& levelData) {
 
 	checkTilePosition(levelData, collideTilePosition, _position.x, _position.y);
 
-	checkTilePosition(levelData, collideTilePosition, _position.x + AGENT_WITDH, _position.y);
-	checkTilePosition(levelData, collideTilePosition, _position.x, _position.y + AGENT_WITDH);
-	checkTilePosition(levelData, collideTilePosition, _position.x + AGENT_WITDH, _position.y + AGENT_WITDH);
+	checkTilePosition(levelData, collideTilePosition, _position.x + AGENT_WIDTH, _position.y);
+	checkTilePosition(levelData, collideTilePosition, _position.x, _position.y + AGENT_WIDTH);
+	checkTilePosition(levelData, collideTilePosition, _position.x + AGENT_WIDTH, _position.y + AGENT_WIDTH);
 
 	if (collideTilePosition.size() == 0) return false;
 
@@ -33,6 +33,25 @@ bool Agent::collideWithLevel(const std::vector<std::string>& levelData) {
 	}
 
 	return true;
+}
+
+bool Agent::collideWithAgent(Agent* agent) {
+	glm::vec2 centerPosA = _position +
+								glm::vec2(AGENT_WIDTH / 2);
+	glm::vec2 centerPosB = agent->getPosition() +
+								glm::vec2(AGENT_WIDTH / 2);
+	glm::vec2 dist = centerPosA - centerPosB;
+	const float MIN_DISTANCE = AGENT_RADIUS * 2;
+	float distance = glm::length(dist);
+	float collisionDepth = MIN_DISTANCE - distance;
+	if (collisionDepth > 0) {
+		glm::vec2 collisionDepthVec =
+			glm::normalize(dist) * collisionDepth;
+		_position += collisionDepthVec / 2.0f;
+		agent->_position -= collisionDepthVec / 2.0f;
+		return true;
+	}
+	return false;
 }
 
 void Agent::checkTilePosition(const std::vector<std::string>& levelData, std::vector<glm::vec2>& collideTilePosition, float x, float y) {

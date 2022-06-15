@@ -1,21 +1,15 @@
 #include "Human.h"
-#include <ctime>
 #include <random>
-
+#include <ctime>
+#include <glm\gtx\rotate_vector.hpp>
 
 Human::Human()
 {
 }
 
-
-Human::~Human()
-{
-}
-
-void Human::init(float speed, glm::vec2 position)
-{
+void Human::init(float speed, glm::vec2 position) {
 	_speed = speed;
-	_color.set(185, 0, 0, 255);
+	color.set(185, 0, 0, 255);
 	_position = position;
 	static std::mt19937 randomEngine(time(nullptr));
 	static std::uniform_real_distribution<float>randDir(-1.0f, 1.0f);
@@ -27,8 +21,14 @@ void Human::init(float speed, glm::vec2 position)
 	_direction = glm::vec2(_direction);
 }
 
-void Human::update(const std::vector<std::string>& levelData)
+void Human::update(const std::vector<std::string>& levelData) {
+
+	static std::mt19937 randomEngine(time(nullptr));
+	static std::uniform_real_distribution<float>randRotate(-40.0f, 40.0f);
+	_position += _direction * _speed;
+	
+}
+
+Human::~Human()
 {
-	//static std::mt19937 randomEngine(time(nullptr));
-	_position = _direction * _speed;
 }
