@@ -1,5 +1,6 @@
 #pragma once
 #include "Agent.h"
+#include "Zombie.h"
 
 class Human : public Agent
 {
@@ -11,6 +12,7 @@ public:
 	~Human();
 	void init(float speed, glm::vec2 position);
 
-	void update(const std::vector<std::string>& levelData);
+	void update(const std::vector<std::string>& levelData, std::vector<Human*>& humans,
+		std::vector<Zombie*>& zombies);
 };
 

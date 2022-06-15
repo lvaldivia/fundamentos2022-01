@@ -21,12 +21,15 @@ void Human::init(float speed, glm::vec2 position) {
 	_direction = glm::vec2(_direction);
 }
 
-void Human::update(const std::vector<std::string>& levelData) {
-
-	static std::mt19937 randomEngine(time(nullptr));
-	static std::uniform_real_distribution<float>randRotate(-40.0f, 40.0f);
+void Human::update(const std::vector<std::string>& levelData, 
+	std::vector<Human*>& humans,
+	std::vector<Zombie*>& zombies) {
 	_position += _direction * _speed;
-	
+	if (collideWithLevel(levelData)) {
+		static std::mt19937 randomEngine(time(nullptr));
+		static std::uniform_real_distribution<float>randRotate(-40.0f, 40.0f);
+		_direction = glm::rotate(_direction, randRotate(randomEngine));
+	}
 }
 
 Human::~Human()

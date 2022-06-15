@@ -26,7 +26,7 @@ void MainGame::initLevel() {
 	_player = new Player();
 	_currenLevel = 0;
 	_player->init(1.0f, _levels[_currenLevel]->getPlayerPosition(), &_inputManager);
-	_humans.push_back(_player);
+	//_humans.push_back(_player);
 	_spriteBacth.init();
 
 	std::mt19937 randomEngine(time(nullptr));
@@ -87,7 +87,7 @@ void MainGame::draw() {
 
 	_spriteBacth.begin();
 	_levels[_currenLevel]->draw();
-
+	_player->draw(_spriteBacth);
 	for (size_t i = 0; i < _humans.size(); i++)
 	{
 		_humans[i]->draw(_spriteBacth);
@@ -172,14 +172,27 @@ void MainGame::update() {
 }
 
 void MainGame::updateAgents() {
+
+	_player->update(_levels[_currenLevel]->getLevelData(), _humans, _zombies);
 	for (size_t i = 0; i < _humans.size(); i++)
 	{
-		_humans[i]->update(_levels[_currenLevel]->getLevelData());
+		_humans[i]->update(_levels[_currenLevel]->getLevelData(),_humans,_zombies);
 	}
 
 	for (size_t i = 0; i < _zombies.size(); i++)
 	{
-		_zombies[i]->update(_levels[_currenLevel]->getLevelData());
+		_zombies[i]->update(_levels[_currenLevel]->getLevelData(), _humans, _zombies);
+
+		for (size_t j = 0; j < _humans.size(); j++)
+		{
+			if (_zombies[i]->collideWithAgent(_humans[j])) {
+				_zombies.push_back(new Zombie());
+				_zombies.back()->init(1.3f, _humans[j]->getPosition());
+				delete _humans[j];
+				_humans[j] = _humans.back();
+				_humans.pop_back();
+			}
+		}
 	}
 }
 
