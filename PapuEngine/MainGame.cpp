@@ -25,8 +25,8 @@ void MainGame::initLevel() {
 	_levels.push_back(new Level("Levels/level1.txt"));
 	_player = new Player();
 	_currenLevel = 0;
-	_player->init(1.0f, _levels[_currenLevel]->getPlayerPosition(), &_inputManager);
-	//_humans.push_back(_player);
+	_player->init(1.0f, _levels[_currenLevel]->getPlayerPosition(), &_inputManager,&_camera);
+	_humans.push_back(_player);
 	_spriteBacth.init();
 
 	std::mt19937 randomEngine(time(nullptr));
@@ -35,7 +35,7 @@ void MainGame::initLevel() {
 	std::uniform_int_distribution<int>randPosY(
 		1, _levels[_currenLevel]->getHeight()-2);
 
-	for (size_t i = 0; i < _levels[_currenLevel]->getNumHumans(); i++)
+	for (int i = 0; i < _levels[_currenLevel]->getNumHumans(); i++)
 	{
 		_humans.push_back(new Human());
 		glm::vec2 pos(randPosX(randomEngine)*TILE_WIDTH, 
@@ -87,17 +87,11 @@ void MainGame::draw() {
 
 	_spriteBacth.begin();
 	_levels[_currenLevel]->draw();
-	_player->draw(_spriteBacth);
-	for (size_t i = 0; i < _humans.size(); i++)
-	{
-		_humans[i]->draw(_spriteBacth);
-	}
 
 	for (size_t i = 0; i < _zombies.size(); i++)
 	{
 		_zombies[i]->draw(_spriteBacth);
 	}
-
 	_spriteBacth.end();
 	_spriteBacth.renderBatch();
 
@@ -134,28 +128,13 @@ void MainGame::procesInput() {
 				_inputManager.releaseKey(event.button.button);
 				break;
 		}
-
-		/*if (_inputManager.isKeyPressed(SDLK_w)) {
-			_camera.setPosition(_camera.getPosition() + glm::vec2(0.0, CAMERA_SPEED));
-		}
-		if (_inputManager.isKeyPressed(SDLK_s)) {
-			_camera.setPosition(_camera.getPosition() + glm::vec2(0.0, -CAMERA_SPEED));
-		}
-		if (_inputManager.isKeyPressed(SDLK_a)) {
-			_camera.setPosition(_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0));
-		}
-		if (_inputManager.isKeyPressed(SDLK_d)) {
-			_camera.setPosition(_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0));
-		}*/
-		if (_inputManager.isKeyPressed(SDLK_q)) {
+		if (_inputManager.isKeyDown(SDLK_q)) {
 			_camera.setScale(_camera.getScale() + SCALE_SPEED);
 		}
-		if (_inputManager.isKeyPressed(SDLK_e)) {
+		if (_inputManager.isKeyDown(SDLK_e)) {
 			_camera.setScale(_camera.getScale() - SCALE_SPEED);
 		}
-		if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
-			
-		}
+
 	}
 }
 
@@ -167,27 +146,33 @@ void MainGame::update() {
 		_camera.update();
 		_time += 0.002f;
 		updateAgents();
+		_inputManager.update();
 		_camera.setPosition(_player->getPosition());
 	}
 }
 
 void MainGame::updateAgents() {
 
-	_player->update(_levels[_currenLevel]->getLevelData(), _humans, _zombies);
+
 	for (size_t i = 0; i < _humans.size(); i++)
 	{
-		_humans[i]->update(_levels[_currenLevel]->getLevelData(),_humans,_zombies);
+		
+		_humans[i]->update(_levels[_currenLevel]->getLevelData(),
+			_humans,_zombies);
 	}
 
 	for (size_t i = 0; i < _zombies.size(); i++)
 	{
-		_zombies[i]->update(_levels[_currenLevel]->getLevelData(), _humans, _zombies);
+		_zombies[i]->update(_levels[_currenLevel]->getLevelData(),
+			_humans, _zombies);
 
-		for (size_t j = 0; j < _humans.size(); j++)
+
+		for (size_t j = 1; j < _humans.size(); j++)
 		{
 			if (_zombies[i]->collideWithAgent(_humans[j])) {
-				_zombies.push_back(new Zombie());
+				_zombies.push_back(new Zombie);
 				_zombies.back()->init(1.3f, _humans[j]->getPosition());
+
 				delete _humans[j];
 				_humans[j] = _humans.back();
 				_humans.pop_back();
