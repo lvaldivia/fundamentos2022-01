@@ -11,6 +11,7 @@
 #include "Zombie.h"
 #include "Player.h"
 #include "Human.h"
+#include "Background.h"
 
 class GamePlayScreen : public IGameScreen
 {
@@ -24,6 +25,7 @@ private:
 	vector<Level*> _levels;
 	vector<Human*>  _humans;
 	vector<Zombie*> _zombies;
+	Background* background;
 	Player* _player;
 	int _currenLevel;
 	void updateAgents();

@@ -64,6 +64,12 @@
     <Filter Include="Header Files\Plataformer">
       <UniqueIdentifier>{8e29cc2a-34b4-46b7-83fa-b3c74e561b9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Assets">
+      <UniqueIdentifier>{48fff595-0af4-4114-8cc9-76b75bdc6c58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Assets">
+      <UniqueIdentifier>{9316b2d2-50c7-4703-8351-ef1fea423136}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -137,6 +143,15 @@
     </ClCompile>
     <ClCompile Include="GamePlayScreen.cpp">
       <Filter>Source Files\Plataformer</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuScreen.cpp">
+      <Filter>Source Files\Plataformer</Filter>
+    </ClCompile>
+    <ClCompile Include="Background.cpp">
+      <Filter>Source Files\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteFont.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +232,15 @@
     </ClInclude>
     <ClInclude Include="GamePlayScreen.h">
       <Filter>Header Files\Plataformer</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuScreen.h">
+      <Filter>Header Files\Plataformer</Filter>
+    </ClInclude>
+    <ClInclude Include="Background.h">
+      <Filter>Header Files\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteFont.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

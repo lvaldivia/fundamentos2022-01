@@ -12,7 +12,6 @@
 GamePlayScreen::GamePlayScreen(Window* window):
 	_window(window)
 {
-	_camera.init(window->getScreenWidth(), window->getScreenHeight());
 }
 
 
@@ -51,6 +50,7 @@ void GamePlayScreen::build() {
 		_zombies.push_back(new Zombie());
 		_zombies.back()->init(1.3f, zombiePosition[i]);
 	}
+	background = new Background("Textures/Fondos/Menu.png");
 }
 void GamePlayScreen::destroy() {
 
@@ -65,7 +65,6 @@ void GamePlayScreen::onEntry() {
 	_program.addAtribute("vertexUV");
 	_program.linkShader();
 
-	_spriteBatch.init();
 	_camera.init(_window->getScreenWidth(),
 		_window->getScreenHeight());
 }
@@ -93,14 +92,9 @@ void GamePlayScreen::draw() {
 
 	_spriteBatch.begin();
 
-	glm::vec2 agentPos;
-	glm::vec2 agentDims(AGENT_RADIUS * 2.0f);
 	for (size_t i = 0; i < _humans.size(); i++)
 	{
-
-		if (_camera.isBoxInView(_humans[i]->getPosition(), agentDims)) {
-			_humans[i]->draw(_spriteBatch);
-		}
+		_humans[i]->draw(_spriteBatch);
 
 	}
 
@@ -108,7 +102,7 @@ void GamePlayScreen::draw() {
 	{
 		_zombies[i]->draw(_spriteBatch);
 	}
-
+	background->draw(_spriteBatch);
 
 	_spriteBatch.end();
 	_spriteBatch.renderBatch();
