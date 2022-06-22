@@ -19,6 +19,7 @@ private:
 	Background* background;
 	Camera2D _camera;
 	void checkInput(); 
+	SpriteFont* spriteFont;
 public:
 	MenuScreen(Window* window);
 	~MenuScreen();

@@ -35,6 +35,7 @@ void MenuScreen::onEntry()
 	_spriteBatch.init();
 	_camera.init(_window->getScreenWidth(),
 		_window->getScreenHeight());
+	spriteFont = new SpriteFont("Fonts/Fuente1.ttf", 40);
 	
 }
 
@@ -45,12 +46,6 @@ void MenuScreen::draw()
 	_program.use();
 
 	glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, _texture.id);
-
-	/*GLuint timeLocation =
-		_program.getUniformLocation("time");
-
-	glUniform1f(timeLocation,_time);*/
 
 	GLuint pLocation =
 		_program.getUniformLocation("P");
@@ -63,8 +58,18 @@ void MenuScreen::draw()
 
 	_spriteBatch.begin();
 
-	background->draw(_spriteBatch);
+	//background->draw(_spriteBatch);
+	char buffer[256];
+	sprintf_s(buffer, "HOLA %d", 100);
+	Color color;
+	color.r = 255;
+	color.g = 0;
+	color.b = 0;
+	color.a = 255;
+	spriteFont->draw(_spriteBatch, buffer, glm::vec2(-100, 50), glm::vec2(1), 0.0f, color);
 
+	sprintf_s(buffer, "HOLA 2 %d", 100);
+	spriteFont->draw(_spriteBatch, buffer, glm::vec2(-200, 150), glm::vec2(1), 0.0f, color);
 	_spriteBatch.end();
 	_spriteBatch.renderBatch();
 
