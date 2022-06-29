@@ -1,10 +1,11 @@
 #include "MenuScreen.h"
-
+#include "ScreenIndices.h"
+#include <iostream>
 
 
 MenuScreen::MenuScreen(Window* window):_window(window)
 {
-	
+	_screenIndex = SCREEN_INDEX_MENU;
 }
 
 MenuScreen::~MenuScreen()
@@ -14,10 +15,13 @@ MenuScreen::~MenuScreen()
 void MenuScreen::build()
 {
 	background = new Background("Textures/Fondos/Menu.png");
+	button = new Button("Textures/btn_play.png");
 }
 
 void MenuScreen::destroy()
 {
+	button = nullptr;
+	background = nullptr;
 }
 
 void MenuScreen::onExit()
@@ -58,7 +62,8 @@ void MenuScreen::draw()
 
 	_spriteBatch.begin();
 
-	//background->draw(_spriteBatch);
+	background->draw(_spriteBatch);
+	button->draw(_spriteBatch);
 	char buffer[256];
 	sprintf_s(buffer, "HOLA %d", 100);
 	Color color;
@@ -82,6 +87,7 @@ void MenuScreen::update()
 {
 	draw();
 	_camera.update();
+	inputManager.update();
 	checkInput();
 }
 
@@ -92,18 +98,33 @@ void MenuScreen::checkInput()
 	{
 		switch (event.type)
 		{
-		default:
+		case SDL_MOUSEBUTTONDOWN:
+			inputManager.pressKey(event.button.button);
 			break;
+		case SDL_MOUSEBUTTONUP:
+			inputManager.releaseKey(event.button.button);
+			break;
+		case SDL_MOUSEMOTION:
+			inputManager.setMouseCoords(event.motion.x,event.motion.y);
+			break;
+		}
+
+		if (inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
+			//presione click;
+			glm::vec2 mouseCoords = _camera.convertScreenToWorl(inputManager.getMouseCoords());
+			if (button->click(mouseCoords)) {
+				_currentState = ScreenState::CHANGE_NEXT;
+			}
 		}
 	}
 }
 
 int MenuScreen::getNextScreen() const
 {
-	return 0;
+	return SCREEN_INDEX_GAMEPLAY;
 }
 
 int MenuScreen::getPreviousScreen() const
 {
-	return 0;
+	return SCREEN_INDEX_NO_INDEX;
 }

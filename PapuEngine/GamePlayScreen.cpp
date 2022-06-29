@@ -5,15 +5,16 @@
 #include <iostream>
 #include "ResourceManager.h"
 #include "PapuEngine.h"
+#include "ScreenIndices.h"
 #include <random>
 #include <ctime>
 
 
-GamePlayScreen::GamePlayScreen(Window* window):
+GamePlayScreen::GamePlayScreen(Window* window) :
 	_window(window)
 {
+	_screenIndex = SCREEN_INDEX_GAMEPLAY;
 }
-
 
 GamePlayScreen::~GamePlayScreen()
 {
