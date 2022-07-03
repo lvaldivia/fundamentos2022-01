@@ -52,6 +52,7 @@ void GamePlayScreen::build() {
 		_zombies.back()->init(1.3f, zombiePosition[i]);
 	}
 	background = new Background("Textures/Fondos/Menu.png");
+	button = new Button("Textures/btn_play.png");
 }
 void GamePlayScreen::destroy() {
 
@@ -104,6 +105,7 @@ void GamePlayScreen::draw() {
 		_zombies[i]->draw(_spriteBatch);
 	}
 	background->draw(_spriteBatch);
+	button->draw(_spriteBatch);
 
 	_spriteBatch.end();
 	_spriteBatch.renderBatch();

@@ -26,7 +26,7 @@ void MenuScreen::destroy()
 
 void MenuScreen::onExit()
 {
-	
+	destroy();
 }
 
 void MenuScreen::onEntry()
