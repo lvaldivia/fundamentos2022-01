@@ -26,6 +26,7 @@ void MenuScreen::destroy()
 
 void MenuScreen::onExit()
 {
+	
 }
 
 void MenuScreen::onEntry()
